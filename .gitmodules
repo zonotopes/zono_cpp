@@ -1,0 +1,3 @@
+[submodule "zono_data"]
+	path = zono_data
+	url = ../zono_data.git

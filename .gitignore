@@ -1,0 +1,8 @@
+### OSX ###
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+## custom
+/build
+/.vscode
