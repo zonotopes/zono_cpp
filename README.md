@@ -70,3 +70,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the Zonotopes project.
+
+
+## Acknowledgments
+
+This project received financial support from the European Union's Horizon 2020 
+research and innovation programme under grant agreement No. 649186 - ISIGrowth, 
+and from MIUR/University of Bologna, grant RFO17GRAZZI.
