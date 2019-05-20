@@ -146,10 +146,9 @@ double factorial(int n) {
 }
 
 
-double zonotope_volume(std::vector<Eigen::VectorXd> &star,
+stats zonotope_volume(std::vector<Eigen::VectorXd> &star,
 	std::vector<Eigen::VectorXd> &vertices,
-	std::vector<int> &edges,
-	int dim) {
+	std::vector<int> &edges, std::vector<double> &tagi, int dim, bool verbose) {
 
 	std::chrono::time_point<std::chrono::system_clock> start, end;
 	start = std::chrono::system_clock::now();
@@ -246,11 +245,10 @@ double zonotope_volume(std::vector<Eigen::VectorXd> &star,
 	end = std::chrono::system_clock::now();
 	int64_t elapsed_msec = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
 
-	myprintf("-----------------------------------------------------------------------\n");
-    myprintf("OUTPUT STATISTICS                              \n");
-    myprintf("S1: Total volume:  %g\n", volume);
-
-    // computing diagonal and total_length_squared
+	verbose && myprintf("------------------------------------------------------------------------\n");
+    verbose && myprintf("OUTPUT VECTORS                                                         \n");
+	
+	// computing diagonal and total_length_squared
 	Eigen::VectorXd diagonal(dim);
 	for (int i = 0; i < dim; i++)
 	   diagonal(i) = 0.0;
@@ -260,40 +258,68 @@ double zonotope_volume(std::vector<Eigen::VectorXd> &star,
 		 total_length_squared += star[i].squaredNorm();
 	}
 
-    myprintf("S2: Diagonal: ");
-	for (int i = 0; i < dim; i++)
-	    myprintf("%g ", diagonal(i));
-	myprintf("\n");
+    verbose && myprintf("Diagonal (as a row vector):                                                              \n");
+    for (int i = 0; i < dim; i++)
+	   verbose && myprintf("%g ", diagonal(i));
+	
+	verbose && myprintf("\n");
+	verbose && myprintf("Tangent between each input generator and the input space:              \n");
+	
+    tagi.resize(n, 0.0);
+	for ( int g = 0; g < n; g++ ){
+		tagi[g] = 0.0;
+		double aux = 0.0;
+		for ( int d=0; d < dim-1; d++ ){
+            aux += star[g][d]*star[g][d];		
+		}
+        tagi[g] = star[g][dim-1]/sqrt(aux);
+		verbose && myprintf("%g\n", tagi[g]);
+	}	   
+	
+	verbose && myprintf("------------------------------------------------------------------------\n");
+	verbose && myprintf("OUTPUT STATISTICS                              \n");
+    
+	stats oStats; // output stats
+	oStats.S1 = volume;     
+	verbose && myprintf("S1: Total volume:  %g\n", oStats.S1);
 
 	double norm_of_the_diagonal = diagonal.norm();
-    myprintf("S3: Diagonal norm: %g\n", norm_of_the_diagonal);
+	oStats.S2 = norm_of_the_diagonal;
+    verbose && myprintf("S2: Diagonal norm: %g\n", oStats.S2);
 
-    myprintf("S4: Sum of squared norms: %g\n", total_length_squared);
+    oStats.S3 = total_length_squared;
+    verbose && myprintf("S3: Sum of squared norms: %g\n", total_length_squared);
 
     // Compute the Gini index (it depends on volume and diagonal)
     double cube = 1.0;
     for (int i = 0; i < dim; i++)
 	    cube *= diagonal(i);
     double gini = volume / cube;
-    myprintf("S5: Gini index: %g\n", gini);
+	oStats.S4 = gini;
+    verbose && myprintf("S4: Gini index: %g\n", oStats.S4);
 
     double base = 0;
 	for (int i = 0; i < dim - 1; i++)
 	    base += diagonal(i) * diagonal(i);
     double tang_diag_input = diagonal(dim - 1) / std::sqrt(float(base));
-    myprintf("S6: Tangent of angle btw. diagonal and the input plane: %g\n", tang_diag_input);
+	oStats.S5 = tang_diag_input;
+    verbose && myprintf("S5: Tangent of angle btw. diagonal and the input plane: %g\n", oStats.S5);
 
     double cos1 = diagonal(dim - 1) / norm_of_the_diagonal;
-    myprintf("S7: Cosine against output: %g\n", cos1 );
+	oStats.S6 = cos1;
+    verbose && myprintf("S6: Cosine against output: %g\n", oStats.S6 );
 
     double sum_squared_input_diagonal = 0;
 	for (int i = 0; i < dim - 1; i++)
 	    sum_squared_input_diagonal += diagonal(i)*diagonal(i);
 
     double cos2 = diagonal(0)/std::sqrt(float( sum_squared_input_diagonal ));
-    myprintf("S8: Cosine of projection of diagonal on input plane with x axis: %g\n", cos2);
+	oStats.S7 = cos2;
+    verbose && myprintf("S7: Cosine of proj. of diagonal on input plane with x axis: %g\n", oStats.S7);
 
-    myprintf("S9: Volume against the cube of the norm of the diagonal: %g\n" , volume/( norm_of_the_diagonal*norm_of_the_diagonal*norm_of_the_diagonal ) );
+    double vol_against_cub = volume/( norm_of_the_diagonal*norm_of_the_diagonal*norm_of_the_diagonal );
+	oStats.S8 = vol_against_cub;
+    verbose && myprintf("S8: Volume against the cube of the norm of the diagonal: %g\n" , oStats.S8 );
 
 //      aux = (total_length_squared/3.0).^1.5;
 //      mistery_number = binomial(size(star,1),3) * aux;
@@ -304,11 +330,13 @@ double zonotope_volume(std::vector<Eigen::VectorXd> &star,
 //      printf("B9: Solid angle: %g\n", solidAngle(star, edges));
 //      printf("B10: Normalized vectors volume: %g\n", xxx);
 //      printf("B11: Volume against diagonal cubed of boundary vectors: %g \n", xxxx);
+    
+	verbose && myprintf("------------------------------------------------------------------------\n");
+    verbose && myprintf("Elapsed time (MIN):\n");
+    verbose && myprintf("%f\n", elapsed_msec / 60000.0f);
+    verbose && myprintf("------------------------------------------------------------------------\n");
 
-    myprintf("-----------------------------------------------------------------------\n");
-    myprintf("Elapsed time (MIN):\n");
-    myprintf("%f\n", elapsed_msec / 60000.0f);
-    myprintf("-----------------------------------------------------------------------\n");
+    oStats.etMIN = elapsed_msec / 60000.0f;
+	return oStats;
 
-	return volume;
 }

@@ -57,19 +57,20 @@ int main(int argc, char *argv[]) {
 
 	std::vector<Eigen::VectorXd> vertices;
 	std::vector<int> edges;
+	std::vector<double> tagi;
 
-	printf("-----------------------------------------------------------------------\n");
-	printf("ZONOTOPE LIBRARY VER 1.2                       \n");
-	printf("-----------------------------------------------------------------------\n");
+	printf("------------------------------------------------------------------------\n");
+	printf("ZONOTOPE LIBRARY VER 1.3                       \n");
+	printf("------------------------------------------------------------------------\n");
 	printf("INPUT: SET OF GENERATORS             \n");
 	printf("N. of dimensions (including the output): %d\n", dim );
 	printf("N. of generators: %d\n", star.size() );
-	myprintf("-----------------------------------------------------------------------\n");
+	myprintf("------------------------------------------------------------------------\n");
 	printf("... the computation of the volume has started (it can take a while) ... \n");
+  	
+	stats oStats = zonotope_volume(star, vertices, edges, tagi, dim);
 
-	double volume = zonotope_volume(star, vertices, edges, dim);
-
-	// printf("Volume of the zonotope: %g\n", volume);
+	myprintf("Volume of the zonotope: %g\n", oStats.S1);
 
 	dbgprintf("\nZONOTOPE_MAIN_END\n"); // KUKOC_ADDED!!!
 

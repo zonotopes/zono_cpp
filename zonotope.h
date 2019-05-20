@@ -6,15 +6,22 @@
 #include <stdarg.h>
 #include "stplugin.h"
 
-extern double zonotope_volume(std::vector<Eigen::VectorXd> &star,
+// data structure for returning output statistics
+struct stats{
+	double S1,S2,S3,S4,S5,S6,S7,S8,etMIN; // the last is the elabsed time (in minutes)
+};
+
+extern stats zonotope_volume(std::vector<Eigen::VectorXd> &star,
     std::vector<Eigen::VectorXd> &vertices,
     std::vector<int> &edges,
-    int dim);
-
+    std::vector<double> &tagi,
+    int dim,
+    bool verbose = false);
+    
 extern unsigned int readFile(const char *filename, std::vector<Eigen::VectorXd> &star);
 extern int myprintf(const char *fmt, ...);
 
-// #define DEBUG_ZONOTOPE
+#define DEBUG_ZONOTOPE
 
 #ifdef DEBUG_ZONOTOPE
 #define dbgprintf(...) printf(__VA_ARGS__)
