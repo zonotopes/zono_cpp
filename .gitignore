@@ -6,3 +6,9 @@
 ## custom
 /build
 /.vscode
+
+.exe
+.plugin
+.txt
+
+my_*.*

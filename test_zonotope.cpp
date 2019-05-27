@@ -33,7 +33,8 @@ int main(int argc, char *argv[]) {
 	unsigned int dim;
     std::vector<Eigen::VectorXd> star, vertices;
 	std::vector<int> edges;
-
+    std::vector<double> tagi;
+    
     std::string linestr;
     std::string filename;
     double expected, volume;
@@ -54,13 +55,17 @@ int main(int argc, char *argv[]) {
         star.clear();
         vertices.clear();
         edges.clear();
+        tagi.clear();
 
     	if ((dim = readFile(filename.c_str(), star)) < 1) {
             std::cout << "FAIL Failed to open input file" << std::endl;
             return 1;
         }
 
-        volume = zonotope_volume(star, vertices, edges, dim);
+        stats oStats = zonotope_volume(star, vertices, edges, tagi, dim);
+
+        volume = oStats.S1;
+
 
         if (volume == expected)
             std::cout << "OK" << std::endl;

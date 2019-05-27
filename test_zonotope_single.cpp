@@ -20,10 +20,12 @@ int main(int argc, char *argv[]) {
 	unsigned int dim;
     std::vector<Eigen::VectorXd> star, vertices;
 	std::vector<int> edges;
-
+    std::vector<double> tagi;
+    
     star.clear();
     vertices.clear();
     edges.clear();
+    tagi.clear();
 
     if ((dim = readFile(argv[1], star)) < 1) {
         std::cout << "Failed to open input file" << std::endl;
@@ -34,7 +36,10 @@ int main(int argc, char *argv[]) {
 
 
     std::cout << "Processing " << argv[1] << ": ";
-    volume = zonotope_volume(star, vertices, edges, dim);
+    stats oStats = zonotope_volume(star, vertices, edges, tagi, dim);
+
+	volume = oStats.S1;
+
 
     if (volume == expected)
         std::cout << "OK" << std::endl;
