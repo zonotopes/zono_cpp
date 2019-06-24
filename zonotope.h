@@ -21,7 +21,7 @@ extern stats zonotope_volume(std::vector<Eigen::VectorXd> &star,
 extern unsigned int readFile(const char *filename, std::vector<Eigen::VectorXd> &star);
 extern int myprintf(const char *fmt, ...);
 
-#define DEBUG_ZONOTOPE
+//#define DEBUG_ZONOTOPE
 
 #ifdef DEBUG_ZONOTOPE
 #define dbgprintf(...) printf(__VA_ARGS__)
