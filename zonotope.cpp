@@ -239,7 +239,7 @@ stats zonotope_volume(std::vector<Eigen::VectorXd> &star,
 		//exit if counters[0] == n-(dim-1)
 	}
 
-	volume /= factorial(dim) / 2; //they are all N dimensional cones. (2, because we are computing half the faces, now)
+	volume /= dim; //factorial(dim) / 2; //they are all N dimensional cones. (2, because we are computing half the faces, now)
 	delete[] counters;
 
 	end = std::chrono::system_clock::now();
