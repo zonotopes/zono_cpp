@@ -1,4 +1,4 @@
-/* ZONOTOPE LIBRARY ver 1.2
+/* ZONOTOPE LIBRARY ver 1.3
 
 Copyright (c) 2017, Federico Ponchio.
 All rights reserved.
