@@ -150,7 +150,11 @@
 #include <cstdlib>
 #include <cmath>
 #include <cassert>
-#include <functional>
+
+#ifndef __GNUC__   // Microfot CL compiter needs <functional> to be included       
+   #include <functional>
+#endif
+
 #include <iosfwd>
 #include <cstring>
 #include <string>

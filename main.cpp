@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
 	printf("------------------------------------------------------------------------\n");
 	printf("INPUT: SET OF GENERATORS             \n");
 	printf("N. of dimensions (including the output): %d\n", dim );
-	printf("N. of generators: %d\n", star.size() );
+	printf("N. of generators: %d\n", int(star.size()) );
 	myprintf("------------------------------------------------------------------------\n");
 	printf("... the computation of the volume has started (it can take a while) ... \n");
   	

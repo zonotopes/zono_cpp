@@ -21,10 +21,12 @@ extern stats zonotope_volume(std::vector<Eigen::VectorXd> &star,
 extern unsigned int readFile(const char *filename, std::vector<Eigen::VectorXd> &star);
 extern int myprintf(const char *fmt, ...);
 
-//#define DEBUG_ZONOTOPE
+
+// uncomment next line if you want to print debug information during the call of the stata plugin
+// #define DEBUG_ZONOTOPE
 
 #ifdef DEBUG_ZONOTOPE
-#define dbgprintf(...) printf(__VA_ARGS__)
+#define dbgprintf(...) myprintf(__VA_ARGS__)
 #else
 #define dbgprintf(...)
 #endif

@@ -89,7 +89,7 @@ STDLL stata_call(int argc, char *argv[])
 	SF_mat_store(mStats, 1, 9, oStats.etMIN);
     
 
-	dbgprintf("\nSTATA_ZONOTOPE_PLUGING_END\n");
+	dbgprintf("\nSTATA_ZONOTOPE_PLUGIN_END\n");
 	return 0;
 }
 
